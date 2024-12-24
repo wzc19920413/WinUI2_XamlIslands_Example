@@ -12,7 +12,6 @@ namespace winrt::SharedComponent::implementation
 
     void MyUserControl::ClickHandler(IInspectable const&, RoutedEventArgs const&)
     {
-        RecordOnRendered();
 		myButton().Content(box_value(L"Clicked"));
     }
 }
