@@ -142,20 +142,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
         RECT windowRect;
         ::GetWindowRect(hWnd, &windowRect);
         ::SetWindowPos(hWndXamlIsland, NULL, (windowRect.right - windowRect.left) / 2, 0, (windowRect.right - windowRect.left) / 2, (windowRect.bottom - windowRect.top) / 2, SWP_SHOWWINDOW);
-        
-        Windows::UI::Xaml::Controls::StackPanel xamlContainer;
-        xamlContainer.Background(Windows::UI::Xaml::Media::SolidColorBrush{ Windows::UI::Colors::LightGray() });
-
-        Windows::UI::Xaml::Controls::TextBlock tb;
-        tb.Text(L"Hello World from Xaml Islands!");
-        tb.VerticalAlignment(Windows::UI::Xaml::VerticalAlignment::Center);
-        tb.HorizontalAlignment(Windows::UI::Xaml::HorizontalAlignment::Center);
-        tb.FontSize(48);
-
-        xamlContainer.Children().Append(tb);
-        xamlContainer.UpdateLayout();
-
-        _desktopWindowXamlSource2.Content(xamlContainer);
+        auto mainPage = winrt::SharedComponent::MainPage(); 
+        _desktopWindowXamlSource2.Content(mainPage);
     }
     if (_desktopWindowXamlSource3 != nullptr)
     {
@@ -177,7 +165,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
         interop->get_WindowHandle(&hWndXamlIsland);
         RECT windowRect;
         ::GetWindowRect(hWnd, &windowRect);
-        ::SetWindowPos(hWndXamlIsland, NULL, 0, (windowRect.bottom - windowRect.top) / 2, (windowRect.right - windowRect.left) / 2, (windowRect.bottom - windowRect.top) / 2, SWP_SHOWWINDOW);
+        ::SetWindowPos(hWndXamlIsland, NULL, (windowRect.right - windowRect.left) / 2, (windowRect.bottom - windowRect.top) / 2, (windowRect.right - windowRect.left) / 2, (windowRect.bottom - windowRect.top) / 2, SWP_SHOWWINDOW);
         auto cowriterCreditLimitDialog = winrt::SharedComponent::CowriterCreditLimitDialog();
         _desktopWindowXamlSource4.Content(cowriterCreditLimitDialog);
     }
