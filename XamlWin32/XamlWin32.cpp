@@ -12,8 +12,10 @@ HINSTANCE hInst;                                // current instance
 WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 winrt::SharedComponent::App hostApp{ nullptr };
-winrt::Windows::UI::Xaml::Hosting::DesktopWindowXamlSource _desktopWindowXamlSource{ nullptr };
-winrt::SharedComponent::MyUserControl _myUserControl{ nullptr };
+winrt::Windows::UI::Xaml::Hosting::DesktopWindowXamlSource _desktopWindowXamlSource1{ nullptr };
+winrt::Windows::UI::Xaml::Hosting::DesktopWindowXamlSource _desktopWindowXamlSource2{ nullptr };
+winrt::Windows::UI::Xaml::Hosting::DesktopWindowXamlSource _desktopWindowXamlSource3{ nullptr };
+winrt::Windows::UI::Xaml::Hosting::DesktopWindowXamlSource _desktopWindowXamlSource4{ nullptr };
 
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -35,7 +37,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     // TODO: Place code here.
     winrt::init_apartment(winrt::apartment_type::single_threaded);
     hostApp = winrt::SharedComponent::App{};
-    _desktopWindowXamlSource = winrt::Windows::UI::Xaml::Hosting::DesktopWindowXamlSource{};
+    _desktopWindowXamlSource1 = winrt::Windows::UI::Xaml::Hosting::DesktopWindowXamlSource{};
+    _desktopWindowXamlSource2 = winrt::Windows::UI::Xaml::Hosting::DesktopWindowXamlSource{};
+    _desktopWindowXamlSource3 = winrt::Windows::UI::Xaml::Hosting::DesktopWindowXamlSource{};
+    _desktopWindowXamlSource4 = winrt::Windows::UI::Xaml::Hosting::DesktopWindowXamlSource{};
 
     // Initialize global strings
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -116,17 +121,53 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     }
 
     // Begin XAML Islands walkthrough code.
-    if (_desktopWindowXamlSource != nullptr)
+    if (_desktopWindowXamlSource1 != nullptr)
     {
-        auto interop = _desktopWindowXamlSource.as<IDesktopWindowXamlSourceNative>();
+        auto interop = _desktopWindowXamlSource1.as<IDesktopWindowXamlSourceNative>();
         check_hresult(interop->AttachToWindow(hWnd));
         HWND hWndXamlIsland = nullptr;
         interop->get_WindowHandle(&hWndXamlIsland);
         RECT windowRect;
         ::GetWindowRect(hWnd, &windowRect);
-        ::SetWindowPos(hWndXamlIsland, NULL, 0, 0, windowRect.right - windowRect.left, windowRect.bottom - windowRect.top, SWP_SHOWWINDOW);
-        _myUserControl = winrt::SharedComponent::MyUserControl();
-        _desktopWindowXamlSource.Content(_myUserControl);
+        ::SetWindowPos(hWndXamlIsland, NULL, 0, 0, (windowRect.right - windowRect.left) / 2, (windowRect.bottom - windowRect.top) / 2, SWP_SHOWWINDOW);
+        auto myUserControl = winrt::SharedComponent::MyUserControl();
+        _desktopWindowXamlSource1.Content(myUserControl);
+    }
+    if (_desktopWindowXamlSource2 != nullptr)
+    {
+        auto interop = _desktopWindowXamlSource2.as<IDesktopWindowXamlSourceNative>();
+        check_hresult(interop->AttachToWindow(hWnd));
+        HWND hWndXamlIsland = nullptr;
+        interop->get_WindowHandle(&hWndXamlIsland);
+        RECT windowRect;
+        ::GetWindowRect(hWnd, &windowRect);
+        ::SetWindowPos(hWndXamlIsland, NULL, (windowRect.right - windowRect.left) / 2, 0, (windowRect.right - windowRect.left) / 2, (windowRect.bottom - windowRect.top) / 2, SWP_SHOWWINDOW);
+        auto mainPage = winrt::SharedComponent::MainPage(); 
+        _desktopWindowXamlSource2.Content(mainPage);
+    }
+    if (_desktopWindowXamlSource3 != nullptr)
+    {
+        auto interop = _desktopWindowXamlSource3.as<IDesktopWindowXamlSourceNative>();
+        check_hresult(interop->AttachToWindow(hWnd));
+        HWND hWndXamlIsland = nullptr;
+        interop->get_WindowHandle(&hWndXamlIsland);
+        RECT windowRect;
+        ::GetWindowRect(hWnd, &windowRect);
+        ::SetWindowPos(hWndXamlIsland, NULL, 0, (windowRect.bottom - windowRect.top) / 2, (windowRect.right - windowRect.left) / 2, (windowRect.bottom - windowRect.top) / 2, SWP_SHOWWINDOW);
+        auto uiUserControl = winrt::SharedComponent::UIUserControl();
+        _desktopWindowXamlSource3.Content(uiUserControl);
+    }
+    if (_desktopWindowXamlSource4 != nullptr)
+    {
+        auto interop = _desktopWindowXamlSource4.as<IDesktopWindowXamlSourceNative>();
+        check_hresult(interop->AttachToWindow(hWnd));
+        HWND hWndXamlIsland = nullptr;
+        interop->get_WindowHandle(&hWndXamlIsland);
+        RECT windowRect;
+        ::GetWindowRect(hWnd, &windowRect);
+        ::SetWindowPos(hWndXamlIsland, NULL, (windowRect.right - windowRect.left) / 2, (windowRect.bottom - windowRect.top) / 2, (windowRect.right - windowRect.left) / 2, (windowRect.bottom - windowRect.top) / 2, SWP_SHOWWINDOW);
+        auto cowriterCreditLimitDialog = winrt::SharedComponent::CowriterCreditLimitDialog();
+        _desktopWindowXamlSource4.Content(cowriterCreditLimitDialog);
     }
     // End XAML Islands walkthrough code.
 
@@ -177,10 +218,25 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     break;
     case WM_DESTROY:
         PostQuitMessage(0);
-        if (_desktopWindowXamlSource != nullptr)
+        if (_desktopWindowXamlSource1 != nullptr)
         {
-            _desktopWindowXamlSource.Close();
-            _desktopWindowXamlSource = nullptr;
+            _desktopWindowXamlSource1.Close();
+            _desktopWindowXamlSource1 = nullptr;
+        }
+        if (_desktopWindowXamlSource2 != nullptr)
+        {
+            _desktopWindowXamlSource2.Close();
+            _desktopWindowXamlSource2 = nullptr;
+        }
+        if (_desktopWindowXamlSource3 != nullptr)
+        {
+            _desktopWindowXamlSource3.Close();
+            _desktopWindowXamlSource3 = nullptr;
+        }
+        if (_desktopWindowXamlSource4 != nullptr)
+        {
+            _desktopWindowXamlSource4.Close();
+            _desktopWindowXamlSource4 = nullptr;
         }
         hostApp.Close();
         break;
@@ -215,13 +271,40 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 
 void AdjustLayout(HWND hWnd)
 {
-    if (_desktopWindowXamlSource != nullptr)
+    if (_desktopWindowXamlSource1 != nullptr)
     {
-        auto interop = _desktopWindowXamlSource.as<IDesktopWindowXamlSourceNative>();
+        auto interop = _desktopWindowXamlSource1.as<IDesktopWindowXamlSourceNative>();
         HWND xamlHostHwnd = NULL;
         check_hresult(interop->get_WindowHandle(&xamlHostHwnd));
         RECT windowRect;
         ::GetWindowRect(hWnd, &windowRect);
-        ::SetWindowPos(xamlHostHwnd, NULL, 0, 0, windowRect.right - windowRect.left, windowRect.bottom - windowRect.top, SWP_SHOWWINDOW);
+        ::SetWindowPos(xamlHostHwnd, NULL, 0, 0, (windowRect.right - windowRect.left) / 2, (windowRect.bottom - windowRect.top) / 2, SWP_SHOWWINDOW);
+    }
+    if (_desktopWindowXamlSource2 != nullptr)
+    {
+        auto interop = _desktopWindowXamlSource2.as<IDesktopWindowXamlSourceNative>();
+        HWND xamlHostHwnd = NULL;
+        check_hresult(interop->get_WindowHandle(&xamlHostHwnd));
+        RECT windowRect;
+        ::GetWindowRect(hWnd, &windowRect);
+        ::SetWindowPos(xamlHostHwnd, NULL, (windowRect.right - windowRect.left) / 2, 0, (windowRect.right - windowRect.left) / 2, (windowRect.bottom - windowRect.top) / 2, SWP_SHOWWINDOW);
+    }
+    if (_desktopWindowXamlSource3 != nullptr)
+    {
+        auto interop = _desktopWindowXamlSource3.as<IDesktopWindowXamlSourceNative>();
+        HWND xamlHostHwnd = NULL;
+        check_hresult(interop->get_WindowHandle(&xamlHostHwnd));
+        RECT windowRect;
+        ::GetWindowRect(hWnd, &windowRect);
+        ::SetWindowPos(xamlHostHwnd, NULL, 0, (windowRect.bottom - windowRect.top) / 2, (windowRect.right - windowRect.left) / 2, (windowRect.bottom - windowRect.top) / 2, SWP_SHOWWINDOW);
+    }
+    if (_desktopWindowXamlSource4 != nullptr)
+    {
+        auto interop = _desktopWindowXamlSource4.as<IDesktopWindowXamlSourceNative>();
+        HWND xamlHostHwnd = NULL;
+        check_hresult(interop->get_WindowHandle(&xamlHostHwnd));
+        RECT windowRect;
+        ::GetWindowRect(hWnd, &windowRect);
+        ::SetWindowPos(xamlHostHwnd, NULL, (windowRect.right - windowRect.left) / 2, (windowRect.bottom - windowRect.top) / 2, (windowRect.right - windowRect.left) / 2, (windowRect.bottom - windowRect.top) / 2, SWP_SHOWWINDOW);
     }
 }

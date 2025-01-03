@@ -1,0 +1,8 @@
+namespace SharedComponent
+{
+    [default_interface]
+    runtimeclass CowriterCreditLimitDialog : Windows.UI.Xaml.Controls.UserControl
+    {
+        CowriterCreditLimitDialog();
+    }
+}
